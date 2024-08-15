@@ -2,6 +2,8 @@ import House from '../models/House.js'
 import Land from '../models/Land.js';
 
 
+import  { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient();
 
 export const createAd = async (req,res)=>{
 

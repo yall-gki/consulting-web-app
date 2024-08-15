@@ -9,6 +9,8 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
 import adRoutes from './routes/adRoutes.js';
+import consultantRoutes from "./routes/consultantRoutes.js";
+import { authorizeConsultant } from './middleware/authMiddleware.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -29,6 +31,7 @@ app.use(bodyParser.json()); // Parse JSON bodies
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/ads', adRoutes);
+app.use("/api/consultant", authorizeConsultant, consultantRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

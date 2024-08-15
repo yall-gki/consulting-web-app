@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+// Define the UserType enum
+// Define the Client model
+model Client {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String @unique
+  password  String
+
+  // Relations
+
+  clientInteractions InteractionHistory[] @relation("ClientInteractions")
+  clientChats        Chat[]               @relation("ClientChats")
+
+  Request Request[]
+}
+
+// Define the Consultant model
+model Consultant {
+  id        Int     @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String  @unique
+  password  String
+  expertise String?
+
+  // Relations
+  consultantInteractions InteractionHistory[] @relation("ConsultantInteractions")
+  consultantChats        Chat[]               @relation("ConsultantChats")
+
+  Request Request[]
+}
+
+// Define the Admin model
+model Admin {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String @unique
+  password  String
+  role      String // e.g., SUPER_ADMIN, MODERATOR, etc.
+}
+
+// Define the InteractionHistory model
+model InteractionHistory {
+  id          Int      @id @default(autoincrement())
+  description String
+  timestamp   DateTime @default(now())
+
+  // Relations
+  clientId     Int?
+  consultantId Int?
+  client       Client?     @relation("ClientInteractions", fields: [clientId], references: [id])
+  consultant   Consultant? @relation("ConsultantInteractions", fields: [consultantId], references: [id])
+}
+
+// Define the Chat model
+model Chat {
+  id           Int        @id @default(autoincrement())
+  messages     Message[]
+  clientId     Int
+  consultantId Int
+  client       Client     @relation("ClientChats", fields: [clientId], references: [id])
+  consultant   Consultant @relation("ConsultantChats", fields: [consultantId], references: [id])
+}
+
+// Define the Message model
+
+model Request {
+  id Int @id @default(autoincrement())
+  duration DateTime @default(now())
+
+  // Relations
+  clientId     Int
+  consultantId Int
+  client       Client     @relation(fields: [clientId], references: [id])
+  consultant   Consultant @relation(fields: [consultantId], references: [id])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  timestamp DateTime @default(now())
+
+  // Relations
+  chatId Int
+  chat   Chat @relation(fields: [chatId], references: [id])
+}

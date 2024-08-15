@@ -32,4 +32,20 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-export default authenticate;
+
+
+
+const authorizeConsultant = (req, res, next) => {
+  try {
+    // Check if the user is a CONSULTANT
+    if (req.user.userType !== 'CONSULTANT') {
+      return res.status(403).json({ message: "Forbidden: You don't have permission to access this resource" });
+    }
+
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Unauthorized: User type check failed", error: error.message });
+  }
+};
+
+export { authorizeConsultant, authenticate };
