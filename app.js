@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
 import adRoutes from './routes/adRoutes.js';
+import businessRoutes from "./routes/businessRoutes.js";
 import consultantRoutes from "./routes/consultantRoutes.js";
 import { authorizeConsultant } from './middleware/authMiddleware.js';
 
