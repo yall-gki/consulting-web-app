@@ -32,6 +32,8 @@ model Client {
   clientChats        Chat[]               @relation("ClientChats")
 
   Request Request[]
+
+  Business Business[]
 }
 
 // Define the Consultant model
@@ -84,9 +86,19 @@ model Chat {
 }
 
 // Define the Message model
+model Business {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  country     String
+  state       String
+  market      String
+  
+  Client Client[]
+}
 
 model Request {
-  id Int @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   duration DateTime @default(now())
 
   // Relations

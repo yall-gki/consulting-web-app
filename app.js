@@ -12,6 +12,8 @@ import adRoutes from './routes/adRoutes.js';
 import consultantRoutes from "./routes/consultantRoutes.js";
 import { authorizeConsultant } from './middleware/authMiddleware.js';
 
+
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -27,14 +29,17 @@ app.use(cors()); // Cross-Origin Resource Sharing
 app.use(bodyParser.urlencoded({ extended: false })); // Parse URL-encoded bodies
 app.use(bodyParser.json()); // Parse JSON bodies
 
+// Handle Socket.IO connections
 
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/ads', adRoutes);
 app.use("/api/consultant", authorizeConsultant, consultantRoutes);
+app.use("/api/business", authorizeConsultant, businessRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
