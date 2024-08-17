@@ -5,12 +5,12 @@ import {
   deleteBusiness,
   updateBusiness,
 } from "../controllers/businessController.js";
-import { authenticate } from "../middleware/authMiddleware.js";
+import { authenticate, authorizeClient } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // Middleware to ensure user is authenticated
-router.use(authenticate);
+router.use(authenticate, authorizeClient);
 
 // Routes for business operations
 router.post("/add", addBusiness); // Route to add a new business

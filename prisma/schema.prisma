@@ -25,8 +25,8 @@ model Client {
   lastName  String
   email     String @unique
   password  String
-
-  // Relations
+  userType  String?  @default("Client") 
+ 
 
   clientInteractions InteractionHistory[] @relation("ClientInteractions")
   clientChats        Chat[]               @relation("ClientChats")
@@ -44,7 +44,7 @@ model Consultant {
   email     String  @unique
   password  String
   expertise String?
-
+ userType  String?  @default("Consultant")
   // Relations
   consultantInteractions InteractionHistory[] @relation("ConsultantInteractions")
   consultantChats        Chat[]               @relation("ConsultantChats")

@@ -16,8 +16,9 @@ const createUser = async (req, res) => {
 
     const pepperedPassword = process.env.PEPPER + password;
     const hashedPassword = await bcrypt.hash(pepperedPassword, 10);
-
+    let user;
     switch (userType) {
+      
       case "Client":
         user = await prisma.client.create({
           data: {
@@ -25,8 +26,10 @@ const createUser = async (req, res) => {
             lastName,
             email,
             password: hashedPassword,
+            userType
           },
         });
+         
         break;
       case "Consultant":
         user = await prisma.consultant.create({
@@ -34,10 +37,13 @@ const createUser = async (req, res) => {
           lastName,
           email,
           password: hashedPassword,
+          userType,
         });
+          
+
         break;
     }
-    res.status(201).json({ message: "User created successfully", user });
+      res.status(201).json({ message: "User created successfully", user });
   } catch (error) {
     res
       .status(500)
@@ -72,7 +78,7 @@ const loginClient = async (req, res) => {
     });
 
     // Set token in cookie
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, { httpOnly: true ,isSecureContext:true});
 
     res.status(200).json({ message: "Login successful", user });
   } catch (error) {
