@@ -12,8 +12,7 @@ export const createRequest = async (req, res) => {
       data: {
         clientId,
         consultantId,
-        duration,
-        status: "pending", // Assuming there's a status field, not defined in schema
+        duration // Assuming there's a status field, not defined in schema
       },
     });
     res.status(201).json({

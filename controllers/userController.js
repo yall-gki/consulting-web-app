@@ -33,11 +33,11 @@ const createUser = async (req, res) => {
         break;
       case "Consultant":
         user = await prisma.consultant.create({
-          data: firstName,
+          data: {firstName,
           lastName,
           email,
           password: hashedPassword,
-          userType,
+          userType}
         });
           
 

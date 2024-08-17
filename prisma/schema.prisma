@@ -99,8 +99,8 @@ model Business {
 
 model Request {
   id       Int      @id @default(autoincrement())
-  duration DateTime @default(now())
-
+  duration Int 
+status      String  @default("pending")
   // Relations
   clientId     Int
   consultantId Int
